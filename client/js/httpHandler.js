@@ -6,18 +6,19 @@
   // TODO: build the swim command fetcher here
   //
   const ajaxGetCommand = () => {
-    $ajax({
+    $.ajax({
       type: 'GET',
       // data:  ,
       url: serverUrl,
       cache: true,
-      dataType: 'json',
+      contentType: false,
       processData: false,
       success: function(res) {
         console.log(res);
-        setTimeOut(function () {
-          ajaxGetCommand;
-        }, 5000);
+        SwimTeam.move(res);
+        setTimeout(function () {
+          ajaxGetCommand();
+        }, 500);
       }
     })
   }
@@ -61,5 +62,5 @@
 
     ajaxFileUplaod(file);
   });
-
+  ajaxGetCommand();
 })();
