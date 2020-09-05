@@ -1,3 +1,4 @@
+
 (function() {
 
   const serverUrl = 'http://127.0.0.1:3000';
@@ -23,6 +24,19 @@
     })
   }
 
+  const getBackgroundImage = () => {
+    $.ajax({
+      type: 'GET',
+      // data:  ,
+      url: serverUrl +  '/background.jpg',
+      cache: true,
+      contentType: false,
+      processData: false,
+      success: function(res) {
+        $('.background').css("background-image", url + res)
+      }
+    })
+  }
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
   // Note: remember to fix the URL below.
@@ -62,5 +76,6 @@
 
     ajaxFileUplaod(file);
   });
+  getBackgroundImage();
   ajaxGetCommand();
 })();

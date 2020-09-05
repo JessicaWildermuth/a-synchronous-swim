@@ -17,8 +17,20 @@ module.exports.initialize = (queue) => {
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
   if (req.method === 'GET') {
+    if (req.url === '/') {
     res.writeHead(200, headers);
     res.end(message.dequeue());
+    } else {
+      fs.readFile(module.exports.backgroundImageFile, (err, data) => {
+        if(err) {
+          res.writeHead(404, headers);
+          res.end();
+        } else {
+          res.writeHead(200, headers);
+          res.end(multipart.getFile(data));
+        }
+      })
+    }
   }
 
   if (req.method === 'OPTIONS') {
@@ -28,7 +40,15 @@ module.exports.router = (req, res, next = ()=>{}) => {
 
   if (req.method === 'POST') {
     // check if the url exists
-    // call req.on on the data and access its chunk
+    if (req.url === '/background.jpg') {
+      var images = [];
+      // call req.on on the data and access its chunk
+      req.on('data', (chunk) => {
+        images.push(chunk);
+      }).on('end', () => {
+        images = multipart.getFile
+      })
+    }
     // store in a container (image)
     // .on calling end and utilize the multipartUtils methods
     console.log(req.data);
